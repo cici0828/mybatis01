@@ -27,7 +27,7 @@ public class UserMapperTest extends  BaseMapperTest {
      * @re
      */
     public int test(){
-        return 1;
+        return 2;
     }
 
 }
