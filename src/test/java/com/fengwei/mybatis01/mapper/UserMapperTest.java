@@ -1,5 +1,6 @@
 package com.fengwei.mybatis01.mapper;
 
+import com.fengwei.mybatis01.model.SysRole;
 import com.fengwei.mybatis01.model.SysUser;
 import org.apache.ibatis.session.ResultContext;
 import org.apache.ibatis.session.ResultHandler;
@@ -43,6 +44,25 @@ public class UserMapperTest extends BaseMapperTest {
             sqlSession.close();
         }
     }
+
+    @Test
+    public void testSelectRolesByUserId(){
+        SqlSession sqlSession = getSqlSession();
+        try{
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            List<SysRole> roleList = userMapper.selectRolesByUserId(11L);
+            Assert.assertNotNull(roleList);
+            for(SysRole sysRole: roleList){
+                System.out.println(sysRole.getRoleName() + "\n" + sysRole.getCreateTime() + "\n" +
+                sysRole.getUser().getUserName());
+            }
+        }
+        finally {
+            sqlSession.close();
+
+        }
+    }
+
 
 
 }
