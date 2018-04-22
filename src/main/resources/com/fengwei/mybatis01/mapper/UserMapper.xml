@@ -29,9 +29,11 @@
         WHERE u.id = #{userId}
     </select>
 
-    <insert id="insertUser">
-        insert into sys_user{
-        
-        }
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user(user_name, user_password, user_email, user_info, head_img, create_time)
+        values(
+         #{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg, jdbcType=BLOB},
+        #{createTime, jdbcType=TIMESTAMP}
+        )
     </insert>
 </mapper>
