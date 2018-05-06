@@ -26,4 +26,11 @@ public class BaseMapperTest {
     public SqlSession getSqlSession(){
         return sqlSessionFactory.openSession();
     }
+
+//    public void printList(List<E> list){
+////        for(Object object : list ){
+////
+////        }
+//    }
+
 }

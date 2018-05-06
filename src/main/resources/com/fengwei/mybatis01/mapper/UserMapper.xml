@@ -7,12 +7,24 @@
         <result property="userName" column="user_name"></result>
     </resultMap>
 
-    <select id="selectById" resultMap="userMap" >
-        SELECT user_name FROM sys_user WHERE id = #{id}
+    <select id="selectById" resultMap="userMap">
+        SELECT id, user_name FROM sys_user WHERE id = #{id}
     </select>
 
     <select id="selectAll" resultType="SysUser">
         SELECT * FROM sys_user
+    </select>
+
+    <select id="selectUserAll2" resultType="SysUser">
+        SELECT * FROM sys_user
+        <!--<where>-->
+        <!--<if test="id != null and  id != ''">id > #{id}</if>-->
+        <!--<if test="userName != null and userName != ''">or user_name = #{userName}</if>-->
+        <!--</where>-->
+        <trim prefix="WHERE" prefixOverrides="AND |OR" suffix="and 1=1">
+            <if test="id != null and  id != ''">and id > #{id}</if>
+            <if test="userName != null and userName != ''">and user_name = #{userName}</if>
+        </trim>
     </select>
 
     <select id="selectRolesByUserId" resultType="SysRole">
@@ -36,4 +48,62 @@
         #{createTime, jdbcType=TIMESTAMP}
         )
     </insert>
+
+    <insert id="insertUser2">
+        insert into sys_user(user_name, user_password, user_email, user_info, head_img, create_time)
+        values(
+        #{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg, jdbcType=BLOB},
+        #{createTime, jdbcType=TIMESTAMP})
+        <selectKey keyColumn="id" resultType="long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateById">
+        update sys_user
+        set user_name = #{userName},
+            user_password = #{userPassword},
+            user_email = #{userEmail},
+            user_info = #{userInfo},
+            head_img = #{headImg, jdbcType=BLOB},
+            create_time = #{createTime, jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+    <select id="selectRolesByUserIdAndRoleEnabled" resultType="SysRole">
+        SELECT r.id, r.role_name, r.enabled, r.create_by, r.create_time
+        FROM sys_user u
+        INNER JOIN sys_user_role ur ON u.id = ur.user_id
+        INNER JOIN sys_role r ON ur.role_id = r.id
+        WHERE u.id = #{userId1} AND r.enabled = #{enabled2}
+    </select>
+
+    <select id="selectUserByIdOrUserName" resultType="SysUser">
+        SELECT * FROM sys_user
+        <where>
+            <choose>
+                <when test="id != null">and id = #{id}</when>
+                <when test="userName !=null and userName != ''">and user_name=#{userName}</when>
+                <otherwise>1=2</otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="selectUserByIdList" resultType="SysUser">
+        SELECT * FROM sys_user
+        WHERE id IN
+        <foreach collection="list" close=")" open="(" separator="," item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectUserByIdArray" resultType="SysUser">
+        SELECT * FROM sys_user
+        WHERE id IN
+        <foreach collection="array" close=")" open="(" separator="," item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+
+
 </mapper>

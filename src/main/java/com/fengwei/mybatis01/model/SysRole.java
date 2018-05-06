@@ -3,11 +3,20 @@ package com.fengwei.mybatis01.model;
 import java.util.Date;
 
 public class SysRole {
+    private Integer id;
     private String roleName;
     private String enabled;
     private String createBy;
     private Date createTime;
     private SysUser user;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getRoleName() {
         return roleName;
