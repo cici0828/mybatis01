@@ -15,4 +15,6 @@ public interface RoleMapper {
     })
     @Select("select id from sys_role where id=#{id}")
     public SysRole selectRoleById2(Long id);
+
+    public SysRole selectRoleById3(Long id);
 }

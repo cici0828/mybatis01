@@ -10,6 +10,15 @@ public class SysUser {
     private String userInfo;
     private byte[] headImg;
     private Date createTime;
+    private SysRole sysRole;
+
+    public SysRole getSysRole() {
+        return sysRole;
+    }
+
+    public void setSysRole(SysRole sysRole) {
+        this.sysRole = sysRole;
+    }
 
     public Long getId() {
         return id;

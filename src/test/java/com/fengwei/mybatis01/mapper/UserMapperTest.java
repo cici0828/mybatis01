@@ -168,18 +168,18 @@ public class UserMapperTest extends BaseMapperTest {
         try {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             SysUser query = new SysUser();
-            query.setId(11L);
-            query.setUserName("fengwei1");
-            SysUser sysUser = userMapper.selectUserByIdOrUserName(query);
-            System.out.println("1:" + sysUser.getUserName());
-            query.setId(null);
+//            query.setId(11L);
+//            query.setUserName("fengwei1");
+//           List<SysUser> sysUser = userMapper.selectUserByIdOrUserName(query);
+//            System.out.println("1:" + sysUser.getUserName());
+            //query.setId(11L);
             query.setUserName("fengwei");
-            sysUser = userMapper.selectUserByIdOrUserName(query);
-            System.out.println("2:" + sysUser.getUserName());
-            query.setUserName(null);
-            query.setId(null);
-            sysUser = userMapper.selectUserByIdOrUserName(query);
-            Assert.assertNull(sysUser);
+            List<SysUser> sysUser = userMapper.selectUserByIdOrUserName(query);
+            //System.out.println("2:" + sysUser.getUserName());
+//            query.setUserName(null);
+//            query.setId(null);
+//            sysUser = userMapper.selectUserByIdOrUserName(query);
+//            Assert.assertNull(sysUser);
         } finally {
             sqlSession.close();
         }
@@ -235,6 +235,47 @@ public class UserMapperTest extends BaseMapperTest {
             sqlSession.close();
         }
     }
+
+    @Test
+    public void testSelectUserRoleById(){
+        SqlSession sqlSession = getSqlSession();
+        try{
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            List<SysUser> userList = userMapper.selectUserAndRoleById2(11L);
+            for(SysUser user: userList){
+                System.out.println(user.getId());
+                System.out.println(user.getUserName());
+                System.out.println(user.getSysRole().getId());
+                System.out.println(user.getSysRole().getRoleName());
+            }
+        }
+        finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectUserRoleById2() {
+        SqlSession sqlSession = getSqlSession();
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            List<SysUser> userList = userMapper.selectUserAndRoleById3(11L);
+            for (SysUser user : userList) {
+                System.out.println(user.getId());
+                //System.out.println("延时调用。。。");
+                //user.equals(null);
+                //user.hashCode();
+                user.toString();
+                //user.getSysRole();
+//                System.out.println(user.getUserName());
+//                System.out.println(user.getSysRole().getId());
+//                System.out.println(user.getSysRole().getRoleName());
+            }
+        } finally {
+            sqlSession.close();
+        }
+    }
+
 
 
 }
